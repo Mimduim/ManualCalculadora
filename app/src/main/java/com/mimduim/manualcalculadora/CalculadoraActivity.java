@@ -1,17 +1,13 @@
 package com.mimduim.manualcalculadora;
 
-        import android.app.ActionBar;
-        import android.app.Notification;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.view.View;
         import android.view.ViewGroup;
-        import android.widget.AbsoluteLayout;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.TableLayout;
         import android.widget.TableRow;
-        import android.widget.TextView;
         import android.widget.Toast;
 
 public class CalculadoraActivity extends AppCompatActivity {
@@ -19,6 +15,8 @@ public class CalculadoraActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final EditText operacao = new EditText(this);
+
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -30,37 +28,51 @@ public class CalculadoraActivity extends AppCompatActivity {
 
         TableLayout leiaute = new TableLayout(this);
 
-
         leiaute.setLayoutParams(
                 new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
 
-
-        TableRow header = new TableRow(this);
-        EditText valor = new EditText(this);
-        valor.setEms(14);
-
-        header.addView(valor);
-
-        leiaute.addView(header);
-
+        leiaute.addView(operacao);
         leiaute.setStretchAllColumns(true);
 
         int cont = 7;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             TableRow linha = new TableRow(this);
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 4; j++) {
                 Button botao = new Button(this);
-                botao.setText("" + cont++);
+                if (i == 0 && j == 0)
+                    botao.setText("C");
+                else if (i == 0 && j == 1)
+                    botao.setText("Sqrt");
+                else if (i == 0 && j == 2)
+                    botao.setText("=");
+                else if (i == 0 && j == 3)
+                    botao.setText("<x");
+                else if (i == 1 && j == 3)
+                    botao.setText("+");
+                else if (i == 2 && j == 3)
+                    botao.setText("-");
+                else if (i == 3 && j == 3)
+                    botao.setText("/");
+                else if (i == 4 && j == 3)
+                    botao.setText("X");
+                else if (i == 4 && j == 0)
+                    botao.setText(".");
+                else if (i == 4 && j == 1)
+                    botao.setText("0");
+                else if (i == 4 && j == 2)
+                    botao.setText("%");
+                else
+                    botao.setText("" + cont++);
                 botao.setOnClickListener(listener);
                 linha.addView(botao);
             }
+            if (i > 0)
             cont-=6;
+
             leiaute.addView(linha);
         }
-
-
         setContentView(leiaute);
     }
 }
