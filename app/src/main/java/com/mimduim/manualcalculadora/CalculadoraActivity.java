@@ -12,35 +12,46 @@ package com.mimduim.manualcalculadora;
 
 public class CalculadoraActivity extends AppCompatActivity {
 
+    private EditText visor;
+    private Button botao;
+    private TableRow linha;
+    private TableLayout leiaute;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final EditText operacao = new EditText(this);
-
+         visor = new EditText(this);
+         visor.setText("");
 
         View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Button btn = (Button) view;
+                tecladoCalculadora(btn.getText().toString());
+                visor.setCursorVisible(false);
+            }};
+       /* View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Button botao = (Button) view;
                 Toast.makeText(CalculadoraActivity.this, "Click: " + botao.getText(), Toast.LENGTH_SHORT).show();
             }
-        };
+        };*/
 
-        TableLayout leiaute = new TableLayout(this);
+        leiaute = new TableLayout(this);
 
         leiaute.setLayoutParams(
                 new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
 
-        leiaute.addView(operacao);
+        leiaute.addView(visor);
         leiaute.setStretchAllColumns(true);
 
         int cont = 7;
         for (int i = 0; i < 5; i++) {
-            TableRow linha = new TableRow(this);
+             linha = new TableRow(this);
             for (int j = 0; j < 4; j++) {
-                Button botao = new Button(this);
+                 botao = new Button(this);
                 if (i == 0 && j == 0)
                     botao.setText("C");
                 else if (i == 0 && j == 1)
@@ -56,7 +67,7 @@ public class CalculadoraActivity extends AppCompatActivity {
                 else if (i == 3 && j == 3)
                     botao.setText("/");
                 else if (i == 4 && j == 3)
-                    botao.setText("X");
+                    botao.setText("*");
                 else if (i == 4 && j == 0)
                     botao.setText(".");
                 else if (i == 4 && j == 1)
@@ -70,9 +81,23 @@ public class CalculadoraActivity extends AppCompatActivity {
             }
             if (i > 0)
             cont-=6;
-
             leiaute.addView(linha);
         }
         setContentView(leiaute);
+    }
+
+    public void tecladoCalculadora(String lerNumero){
+        String aux = null;
+        if (visor.getText().toString().trim().equals("")) {
+            String textvisor = visor.getText().toString();
+            String numero = String.valueOf(lerNumero);
+            aux = textvisor + numero;
+            visor.setText(aux);
+        } else {
+            String textvisor = visor.getText().toString();
+            String numero = String.valueOf(lerNumero);
+            aux = textvisor + numero;
+            visor.setText(aux);
+        }
     }
 }
