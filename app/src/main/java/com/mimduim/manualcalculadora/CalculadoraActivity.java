@@ -21,8 +21,8 @@ public class CalculadoraActivity extends AppCompatActivity {
     private TableRow linha;
     private TableLayout leiaute;
     private double num1, num2, resp;
-    private String STRING = "";
-    private String aux, textvisor, numero, operador;
+    private String string = "";
+    private String aux, textvisor, textnextvisor, operador;
 
 
     @Override
@@ -30,11 +30,13 @@ public class CalculadoraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         visor = new EditText(this);
         visor.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        visor.setText("");
+        visor.setGravity(View.TEXT_ALIGNMENT_CENTER);
         visor.setTextSize(70);
+        visor.setSingleLine(true);
         visor.setBackgroundColor(Color.parseColor("#000000"));
-        visor.setTextColor(Color.parseColor("#19B5FE"));
+        visor.setTextColor(Color.parseColor("#2ecc71"));
         visor.setCursorVisible(false);
+        visor.setText("");
 
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
@@ -45,22 +47,10 @@ public class CalculadoraActivity extends AppCompatActivity {
         };
 
 
-        TABLECREATE(listener);
-
-
-
-       /* View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Button botao = (Button) view;
-                Toast.makeText(CalculadoraActivity.this, "Click: " + botao.getText(), Toast.LENGTH_SHORT).show();
-            }
-        };*/
-
-
+        tableCreate(listener);
     }
 
-    public void TABLECREATE(View.OnClickListener listener) {
+    public void tableCreate(View.OnClickListener listener) {
         leiaute = new TableLayout(this);
         leiaute.setBackgroundColor(Color.parseColor("#000000"));
 
@@ -75,12 +65,11 @@ public class CalculadoraActivity extends AppCompatActivity {
         int cont = 7;
         for (int i = 0; i < 5; i++) {
             linha = new TableRow(this);
-            linha.setPadding(5,5,5,5);
+            linha.setPadding(5, 5, 5, 5);
             for (int j = 0; j < 4; j++) {
                 botao = new Button(this);
                 botao.setTextSize(30);
-                botao.setPadding(5,5,5,5);
-                // botao.setBackgroundResource(R.drawable.abc_action_bar_item_background_material);
+                botao.setPadding(5, 5, 5, 5);
                 botao.setTextColor(Color.parseColor("#19B5FE"));
                 botao.setBackgroundColor(Color.parseColor("#000000"));
 
@@ -88,25 +77,25 @@ public class CalculadoraActivity extends AppCompatActivity {
                 if (i == 0 && j == 0)
                     botao.setText("C");
                 else if (i == 0 && j == 1)
-                    botao.setText("SQRT");
+                    botao.setText("√");
                 else if (i == 0 && j == 2)
                     botao.setText("=");
                 else if (i == 0 && j == 3)
-                    botao.setText("<X");
+                    botao.setText("◄");
                 else if (i == 1 && j == 3)
                     botao.setText("+");
                 else if (i == 2 && j == 3)
                     botao.setText("-");
                 else if (i == 3 && j == 3)
-                    botao.setText("/");
+                    botao.setText("÷");
                 else if (i == 4 && j == 3)
-                    botao.setText("*");
+                    botao.setText("×");
                 else if (i == 4 && j == 0)
                     botao.setText(".");
                 else if (i == 4 && j == 1) {
                     botao.setText("0");
                 } else if (i == 4 && j == 2)
-                    botao.setText("%");
+                    botao.setText("٪");
                 else {
                     botao.setText("" + cont++);
                 }
@@ -120,112 +109,125 @@ public class CalculadoraActivity extends AppCompatActivity {
         setContentView(leiaute);
     }
 
-    public String ADICAO() {
-        num1 = Float.parseFloat(STRING);
+    public String adicao() {
+        num1 = Float.parseFloat(string);
         num2 = Float.parseFloat(textvisor);
         resp = num1 + num2;
         aux = String.valueOf(resp);
         return aux;
     }
 
-    public String SUBTRACAO() {
-        num1 = Float.parseFloat(STRING);
+    public String subtracao() {
+        num1 = Float.parseFloat(string);
         num2 = Float.parseFloat(textvisor);
         resp = num1 - num2;
         aux = String.valueOf(resp);
         return aux;
     }
 
-    public String DIVISAO() {
-        num1 = Float.parseFloat(STRING);
+    public String divisao() {
+        num1 = Float.parseFloat(string);
         num2 = Float.parseFloat(textvisor);
         resp = num1 / num2;
         aux = String.valueOf(resp);
         return aux;
     }
 
-    public String MULTIPLICACAO() {
-        num1 = Float.parseFloat(STRING);
+    public String multiplicacao() {
+        num1 = Float.parseFloat(string);
         num2 = Float.parseFloat(textvisor);
         resp = num1 * num2;
         aux = String.valueOf(resp);
         return aux;
     }
 
-    public String PORCENTAGEM() {
-        num1 = Float.parseFloat(STRING);
+    public String porcentagem() {
+        num1 = Float.parseFloat(string);
         num2 = Float.parseFloat(textvisor);
         resp = num1 * (num2 / 100);
         aux = String.valueOf(resp);
         return aux;
     }
 
-    public String SQRT() {
-        num1 = Float.parseFloat(STRING);
-        num2 = Float.parseFloat(textvisor);
-        resp = Math.pow(num1, num2);
+    public String sqrt() {
+        num1 = Float.parseFloat(string);
+        resp = Math.sqrt(num1);
         aux = String.valueOf(resp);
         return aux;
     }
 
-    public String tecladoCalculadora(String string) {
+    public String tecladoCalculadora(String str) {
         aux = null;
         textvisor = visor.getText().toString();
-        numero = string;
+        textnextvisor = str;
 
-        if (numero == "C") {
+        if (textnextvisor == "C") {
             aux = "";
-            STRING = aux;
+            string = aux;
             return aux;
-        } else if (numero == "<X") {
+        } else if (textnextvisor == "◄") {
             aux = textvisor;
             if (!aux.isEmpty()) aux = aux.substring(0, aux.length() - 1);
             return aux;
-        } else if (numero == "+") {
-            operador = numero;
+        } else if (textnextvisor == "+") {
+            operador = textnextvisor;
             aux = textvisor;
-            STRING = aux;
+            string = aux;
             aux = "";
             return aux;
-        } else if (numero == "-") {
-            operador = numero;
+        } else if (textnextvisor == "-") {
+            operador = textnextvisor;
             aux = textvisor;
-            STRING = aux;
+            string = aux;
             aux = "";
             return aux;
-        } else if (numero == "/") {
-            operador = numero;
+        } else if (textnextvisor == "÷") {
+            operador = textnextvisor;
             aux = textvisor;
-            STRING = aux;
+            string = aux;
             aux = "";
             return aux;
-        } else if (numero == "*") {
-            operador = numero;
+        } else if (textnextvisor == "×") {
+            operador = textnextvisor;
             aux = textvisor;
-            STRING = aux;
+            string = aux;
             aux = "";
             return aux;
-        } else if (numero == "SQRT") {
-            operador = numero;
+        } else if (textnextvisor == "√") {
+            operador = textnextvisor;
             aux = textvisor;
-            STRING = aux;
+            string = aux;
             aux = "";
             return aux;
-        } else if (numero == "%") {
-            return PORCENTAGEM();
-        } else if (numero == "=") {
+        } else if (textnextvisor == "٪") {
+            return porcentagem();
+        } else if (textnextvisor == "=" && textvisor != "") {
             if (operador == "+")
-                return ADICAO();
-            if (operador == "-")
-                return SUBTRACAO();
-            if (operador == "/")
-                return DIVISAO();
-            if (operador == "*")
-                return MULTIPLICACAO();
-            if (operador == "SQRT")
-                return SQRT();
+                return adicao();
+            else if (operador == "-")
+                return subtracao();
+            else if (operador == "÷")
+                return divisao();
+            else if (operador == "×")
+                return multiplicacao();
+            else if (operador == "√")
+                return sqrt();
+        } else if (textnextvisor == "=" || textnextvisor == "+" || textnextvisor == "-" || textnextvisor == "×" || textnextvisor == "÷"
+                || textnextvisor == "√" || textnextvisor == "٪" && textvisor == "") {
+            return "";
         }
-        aux = textvisor + numero;
+        aux = textvisor + textnextvisor;
         return aux;
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
